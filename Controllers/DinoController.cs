@@ -8,61 +8,66 @@ namespace JurassicPark
     {
 
         private string User;
-        private Zoo Zoo;
-        private Logger Logger;
+        private Park Zoo;
+        private Logger Log;
 
-        public DinosaurController(string user, Zoo zoo, bool debug = false)
+        public DinosaurController(string user, Park zoo, Logger log)
         {
             User = user;
             Zoo = zoo;
-            Logger = new Logger(debug);
-            Log("connected.");
+            Log = log;
+            Log.Info("connected.");
         }
 
-        public IEnumerable<Zoo.Dinosaur> View(string key = "", string option = "")
+        public IEnumerable<Park.Dinosaur> View(string key = "", string option = "")
         {
             switch (key)
             {
-                case "D":
-                    Log($"viewed all Dinosaurs acquired after {option}");
+                case "Name":
+                    Log.Info($"view all Dinosaurs with name {option}");
+                    return Zoo.FindWhere(dino => dino.Name == option);
+                case "Diet":
+                    Log.Info($"view all Dinosaurs with diet {option}");
+                    return Zoo.FindWhere(dino => dino.Diet == option);
+                case "Date":
+                    Log.Info($"viewed all Dinosaurs acquired after {option}");
                     return Zoo.FindWhere(dino => dino.Acquired > DateTime.Parse(option));
-                case "E":
-                    Log($"viewed all Dinosaurs in enclosure {option}");
+                case "Enclosure":
+                    Log.Info($"viewed all Dinosaurs in enclosure {option}");
                     return Zoo.FindWhere(dino => dino.Enclosure == Int32.Parse(option));
                 default:
-                    Log("viewed all Dinosaurs.");
+                    Log.Info("viewed all Dinosaurs.");
                     return Zoo.FindWhere();
             }
         }
 
         public void Add(string name, string diet, int weight, int enclosure)
         {
-            Log($"added new Dinosaur named {name} in enclosure {enclosure}");
+            Log.Info($"added new Dinosaur named {name} in enclosure {enclosure}");
             Zoo.AddDinosaur(name, diet, weight, enclosure);
         }
 
-        public void Remove(Zoo.Dinosaur dino)
+        public void Remove(Park.Dinosaur dino)
         {
-            Log($"removed dinosaur - {dino.Description()}");
+            Log.Info($"removed a dinosaur {dino.Name} located in enclosure {dino.Enclosure}");
             Zoo.RemoveDinosaur(dino);
         }
 
-        public void Transfer(Zoo.Dinosaur dino, int enclosure)
+        public void Transfer(Park.Dinosaur dino, int enclosure)
         {
-            Log($"transferred - {dino.Description()} to new enclosure {enclosure}");
+            Log.Info($"transferred - {dino.Description()} to new enclosure {enclosure}");
             Zoo.MoveDinosaur(dino, enclosure);
         }
 
         public void Quit()
         {
-            Log("disconnected.");
-            Logger.Save();
+            Zoo.Save();
+            Log.Info("saved database");
+            Log.Info("disconnected");
+            Log.Save();
+
         }
 
-        private void Log(string log)
-        {
-            Logger.Write($"{User}: log");
-        }
 
     }
 

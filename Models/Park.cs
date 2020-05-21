@@ -7,11 +7,16 @@ using System.Collections.Generic;
 namespace JurassicPark
 {
 
-    public class Zoo
+    public class Park
     {
 
         private List<Dinosaur> Dinosaurs;
         private string FileName = "dinosaurs.json";
+
+        public Park() 
+        {
+            Dinosaurs = new List<Dinosaur>{};
+        }
 
         public IEnumerable<Dinosaur> FindWhere(Func<Dinosaur, bool> findThunk = null)
         {
@@ -38,31 +43,49 @@ namespace JurassicPark
             dino.Enclosure = newEnclosure;
         }
 
-        public async void Save()
+        // WHY IS JSON SERIALIZATION SO CONVOLUTED.
+        // THIS WAY LEADS TO MADNESS.
+        public void Save()
         {
-            using (FileStream fs = File.Create(FileName))
-            {
-                await JsonSerializer.SerializeAsync(fs, Dinosaurs);
-            }
+            DinosaurJson dinoJson = new DinosaurJson{};
+            dinoJson.Dinosaurs = Dinosaurs;
+            File.WriteAllText(FileName, JsonSerializer.Serialize(dinoJson));
         }
 
-        public void Load()
+        public bool Load()
         {
-            string jsonString = File.ReadAllText(FileName);
-            Dinosaurs = JsonSerializer.Deserialize<List<Dinosaur>>(jsonString);
+            string jsonString;
+            try
+            {
+                jsonString = File.ReadAllText(FileName);
+            }
+            catch
+            {
+                return false;
+            }
+            DinosaurJson dinoJson = JsonSerializer.Deserialize<DinosaurJson>(jsonString);
+            Dinosaurs = dinoJson.Dinosaurs;
+            return true;
+        }
+
+        public class DinosaurJson
+        {
+            public List<Dinosaur> Dinosaurs { get; set; }
         }
 
         public class Dinosaur
         {
 
-            protected internal string Name       { get; set; }
-            protected internal string Diet       { get; set; }
-            protected internal int Weight        { get; set; }
-            protected internal int Enclosure     { get; set; }
-            protected internal int ID { get; set; }
-            protected internal DateTime Acquired { get; set; }
+            public string Name       { get; set; }
+            public string Diet       { get; set; }
+            public int Weight        { get; set; }
+            public int Enclosure     { get; set; }
+            public int ID { get; set; }
+            public DateTime Acquired { get; set; }
 
-            protected internal Dinosaur(string name, string diet, int weight, int enclosure)
+            public Dinosaur() {}
+
+            public Dinosaur(string name, string diet, int weight, int enclosure)
             {
                 Name = name;
                 Diet = diet;
