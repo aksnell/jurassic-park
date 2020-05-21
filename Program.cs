@@ -1,11 +1,16 @@
-﻿namespace JurassicPark
+﻿using System;
+
+namespace JurassicPark
 {
     class Program
     {
+        // Here lies jank and glue.
         static void Main(string[] args)
         {
+            Console.WriteLine("What is your name?");
+            string name = Console.ReadLine();
             Park zoo = new Park();
-            Logger log = new Logger("Alex", true);
+            Logger log = new Logger(name, true);
             if (zoo.Load())
             {
                 log.Info("loaded database file");
