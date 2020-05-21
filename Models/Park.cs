@@ -43,7 +43,7 @@ namespace JurassicPark
             dino.Enclosure = newEnclosure;
         }
 
-        // WHY IS JSON SERIALIZATION SO CONVOLUTED.
+        // WHY IS JSON SERIALIZATION SO CONVOLUTED IN C#.
         // THIS WAY LEADS TO MADNESS.
         public void Save()
         {

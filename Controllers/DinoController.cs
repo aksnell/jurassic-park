@@ -24,10 +24,10 @@ namespace JurassicPark
             switch (key)
             {
                 case "Name":
-                    Log.Info($"view all Dinosaurs with name {option}");
+                    Log.Info($"viewed all Dinosaurs with name {option}");
                     return Zoo.FindWhere(dino => dino.Name == option);
                 case "Diet":
-                    Log.Info($"view all Dinosaurs with diet {option}");
+                    Log.Info($"viewed all Dinosaurs with diet {option}");
                     return Zoo.FindWhere(dino => dino.Diet == option);
                 case "Date":
                     Log.Info($"viewed all Dinosaurs acquired after {option}");
@@ -36,7 +36,7 @@ namespace JurassicPark
                     Log.Info($"viewed all Dinosaurs in enclosure {option}");
                     return Zoo.FindWhere(dino => dino.Enclosure == Int32.Parse(option));
                 default:
-                    Log.Info("viewed all Dinosaurs.");
+                    Log.Info("viewed all Dinosaurs");
                     return Zoo.FindWhere();
             }
         }

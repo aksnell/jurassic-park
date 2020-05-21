@@ -52,9 +52,13 @@ namespace JurassicPark
 
         public int PromptFromList(string header, List<string> choices)
         {
+            if (choices.Count() == 0) {
+                Console.WriteLine("No matching choices!");
+                return -1;
+            }
 
             WriteList(header, choices);
-            return PromptForInteger("Choice: ", choices.Count);
+            return PromptForInteger("choice", choices.Count);
 
         }
 
@@ -140,17 +144,23 @@ namespace JurassicPark
                     {
                         var dinoName = PromptForString("name");
                         var dinoList = DinoCon.View("Name", dinoName).ToList();
-                        var dinoIndexToRemove = PromptFromList("select a matching dinosaur", GetAllDescriptions(dinoList)) - 1;
-                        DinoCon.Remove(dinoList[dinoIndexToRemove]);
+                        var dinoIndexToRemove = PromptFromList("select a matching dinosaur", GetAllDescriptions(dinoList));
+                        if (dinoIndexToRemove != -1)
+                        {
+                            DinoCon.Remove(dinoList[dinoIndexToRemove-1]);
+                        }
                         break;
                     }
                     case 3:
                     {
                         var dinoName = PromptForString("name");
                         var dinoList = DinoCon.View("Name", dinoName).ToList();
-                        var dinoIndexToMove = PromptFromList("select a matching dinosaur", GetAllDescriptions(dinoList)) - 1;
-                        var dinoEnclosure = PromptForInteger("new enclosure");
-                        DinoCon.Transfer(dinoList[dinoIndexToMove], dinoEnclosure);
+                        var dinoIndexToMove = PromptFromList("select a matching dinosaur", GetAllDescriptions(dinoList));
+                        if (dinoIndexToMove != -1)
+                        {
+                            var dinoEnclosure = PromptForInteger("new enclosure");
+                            DinoCon.Transfer(dinoList[dinoIndexToMove-1], dinoEnclosure);
+                        }
                         break;
                     }
                     case 4:
