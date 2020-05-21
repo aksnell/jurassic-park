@@ -1,0 +1,7 @@
+5/21/2020 2:13:17 AM: DEBUG: User: Alex - enabled debug mode
+5/21/2020 2:13:17 AM: DEBUG: User: Alex - loaded database file
+5/21/2020 2:13:17 AM: DEBUG: User: Alex - connected.
+5/21/2020 2:13:22 AM: DEBUG: User: Alex - viewed all Dinosaurs.
+5/21/2020 2:13:26 AM: DEBUG: User: Alex - saved database
+5/21/2020 2:13:26 AM: DEBUG: User: Alex - disconnected
+5/21/2020 2:13:26 AM: DEBUG: User: Alex - saving logs to log.txt
