@@ -47,7 +47,7 @@ namespace JurassicPark
         // THIS WAY LEADS TO MADNESS.
         public void Save()
         {
-            DinosaurJson dinoJson = new DinosaurJson{};
+            ParkJson dinoJson = new ParkJson{};
             dinoJson.Dinosaurs = Dinosaurs;
             File.WriteAllText(FileName, JsonSerializer.Serialize(dinoJson));
         }
@@ -63,12 +63,17 @@ namespace JurassicPark
             {
                 return false;
             }
-            DinosaurJson dinoJson = JsonSerializer.Deserialize<DinosaurJson>(jsonString);
+            ParkJson dinoJson = JsonSerializer.Deserialize<ParkJson>(jsonString);
             Dinosaurs = dinoJson.Dinosaurs;
             return true;
         }
 
-        public class DinosaurJson
+        // This is my last ditch attempt to get json serialization working after the fact.
+        // Why in the world can you not just deserialize directly into a list????
+        // I must have missed something.
+        // If I had known it was this silly I would have saved a good chunk of time and just
+        // changed when and were I deseralize from outside the Park class.
+        public class ParkJson
         {
             public List<Dinosaur> Dinosaurs { get; set; }
         }

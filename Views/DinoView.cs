@@ -17,7 +17,8 @@ namespace JurassicPark
             Log = log;
             Formatter = new CultureInfo("en-Us", false).TextInfo;
         }
-
+        
+        // Returns a list of all Dinosaur.Description() in the passed IEnumerable
         public List<string> GetAllDescriptions(IEnumerable<Park.Dinosaur> dinos)
         {
             var dinoDescriptions = new List<string>();
@@ -50,13 +51,17 @@ namespace JurassicPark
 
         }
 
+        // Presents a formatted and numbered list from a list of Strings
+        // and returns an integer guarenteed to be in range of a non-empty list
+        // or -1 on empty list.
         public int PromptFromList(string header, List<string> choices)
         {
             if (choices.Count() == 0) {
                 Console.WriteLine("No matching choices!");
                 return -1;
             }
-
+            // Will eventually blow the stack;
+            // too tired to refactor
             WriteList(header, choices);
             return PromptForInteger("choice", choices.Count);
 
@@ -71,7 +76,9 @@ namespace JurassicPark
             return userInput;
 
         }
-
+        // Verifies if string is an integer and optionally if its
+        // equal to or less than a passed integer.
+        // can c# just declare something to be MAXINT32 to minimize some of this logic?
         public int PromptForInteger(string label, int max = 0)
         {
 
@@ -88,7 +95,8 @@ namespace JurassicPark
                     return userInput;
                 }
             }
-
+            // Will eventually block the stack
+            // too tired to refactor
             Log.Error("Please enter a valid integer!");
             return PromptForInteger(label, max);
         }
@@ -103,9 +111,12 @@ namespace JurassicPark
 
             if (validInput)
             {
+                // It was way too late to try and grok c# generics
+                // so valid date time is verified, but original string is
+                // returned and its reconverted to a Date when needed later.
                 return userInput;
             }
-
+            // Stack risk, etc
             Log.Error("Please enter a valid date!");
             return PromptForDate(label);
 
@@ -131,6 +142,7 @@ namespace JurassicPark
 
                 switch (userInput)
                 {
+                    // Add dino
                     case 1:
                     {
                         var dinoName = PromptForString("name");
@@ -140,6 +152,7 @@ namespace JurassicPark
                         DinoCon.Add(dinoName, dinoDiet, dinoWeight, dinoEnclosure);
                         break;
                     }
+                    // Remove dino
                     case 2:
                     {
                         var dinoName = PromptForString("name");
@@ -151,6 +164,7 @@ namespace JurassicPark
                         }
                         break;
                     }
+                    // Transfer Dino
                     case 3:
                     {
                         var dinoName = PromptForString("name");
@@ -163,6 +177,7 @@ namespace JurassicPark
                         }
                         break;
                     }
+                    // Summarize
                     case 4:
                     {
                         var carnivores = DinoCon.View("Diet", "Carnivore").Count();
@@ -170,21 +185,25 @@ namespace JurassicPark
                         WriteList("summary", new List<string> {$"Carnivores: {carnivores}", $"Herbivores: {herbivores}"});
                         break;
                     }
+                    // See all in enclosure
                     case 5:
                     {
                         var enclosure = PromptForInteger("enclosure");
                         WriteList($"dinosaurs in {enclosure}", GetAllDescriptions(DinoCon.View("Enclosure", enclosure.ToString())));
                         break;
                     }
+                    // See all after date
                     case 6:
                     {
                         var date = PromptForString("date");
                         WriteList($"acquired after {date}", GetAllDescriptions(DinoCon.View("Date", date)));
                         break;
                     }
+                    // See all
                     case 7:
                         WriteList("dinosaurs", GetAllDescriptions(DinoCon.View()));
                         break;
+                    // Quit
                     case 8:
                         hasQuit = true;
                         DinoCon.Quit();
