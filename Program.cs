@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace jurassic_park
+namespace JurassicPark
 {
     class Program
     {
@@ -15,7 +15,7 @@ namespace jurassic_park
 
             while (true)
             {
-                Console.WriteLine("\nPlease select an option!\n\tAdd\n\tRemove\n\tTransfer\n\tSummary\n\tView\n\tQuit\n");
+                Console.WriteLine("\nPlease select an option!\n\t(A)dd\n\t(R)emove\n\t(T)ransfer\n\t(S)ummary\n\t(V)iew\n\t(Q)uit\n");
 
                 switch (Console.ReadLine())
                 {
@@ -26,7 +26,7 @@ namespace jurassic_park
                     // * All paths artisninally hand verified.
 
                     // Add new Dinosaur to list.
-                    case "Add":
+                    case "A":
 
                         Console.WriteLine("\nDescribe the new dinosaur:");
                         Console.WriteLine("\tExample: name carnivore|herbivore weight enclosure");
@@ -68,7 +68,7 @@ namespace jurassic_park
                         break;
 
                     // Remove all matching Dinosaur names.
-                    case "Remove":
+                    case "R":
 
                         Console.WriteLine("\nPlease enter the name of the Dinosaur to remove.");
                         Console.WriteLine("\tHint: All dinosaurs with that name will be removed!\n");
@@ -78,15 +78,16 @@ namespace jurassic_park
                         break;
 
                     // Transfer all matching Dinosaur names.
-                    case "Transfer":
+                    case "T":
+
                         Console.WriteLine("\nPlease enter the name and new enclosure of the Dinosaur to move!");
                         Console.WriteLine("\tHint: All dinosaurs with that name will be moved!");
                         Console.WriteLine("\tExample: name enclosure\n");
 
                         var transferArgs = Console.ReadLine().Split(' ').Where(arg => arg != "").ToArray();
-
                         int transferEnclosure;
                         bool validTransferEnclosure = Int32.TryParse(transferArgs[1], out transferEnclosure);
+
                         if (!validTransferEnclosure)
                         {
                             Console.WriteLine("\n\tERROR: Please enter a valid number for the dinosaur's new enclosure!");
@@ -101,7 +102,7 @@ namespace jurassic_park
                         }
                         break;
 
-                    case "Summary":
+                    case "S":
 
                         int carn = dinosaurs.Count(dino => dino.DietType == "carnivore");
                         int herb = dinosaurs.Count(dino => dino.DietType == "herbivore");
@@ -111,12 +112,11 @@ namespace jurassic_park
                         Console.WriteLine($"{herb} Herbicores\n");
                         break;
 
-                    case "View":
-
+                    case "V":
                         dinosaurs.OrderBy(dino => dino.WhenAcquired).ToList().ForEach(dino => dino.Description());
                         break;
 
-                    case "Quit":
+                    case "Q":
                         return;
 
                     default:
