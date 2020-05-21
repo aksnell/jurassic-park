@@ -12,11 +12,11 @@ namespace JurassicPark
             string name = Console.ReadLine();
             
             Logger log = new Logger(name, true);
-            DinosaurController dinoCon = new DinosaurController(name, zoo, log);
+            DinosaurController dinoCon = new DinosaurController(name, park, log);
             DinosaurView dinoView = new DinosaurView(dinoCon, log);
             
             // Attempt to load database.
-            if (zoo.Load())
+            if (park.Load())
             {
                 log.Info("loaded database file");
             } else {
@@ -27,7 +27,7 @@ namespace JurassicPark
             dinoView.Menu();
             
             // Save after Menu returns.
-            zoo.Save();
+            park.Save();
         }
     }
 }
